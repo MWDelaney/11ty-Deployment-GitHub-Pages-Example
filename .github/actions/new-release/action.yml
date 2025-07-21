@@ -43,12 +43,13 @@ runs:
     # Get the artifact from the build step
     - name: 📥 Download Artifact
       uses: actions/download-artifact@v4
+      id: download_artifact
       with:
         name: ${{ inputs.publish_dir }}
 
     # Zip the downloaded artifact
     - name: 🗜 Zip artifact
-      run: zip -r ${{ inputs.publish_dir }}.zip ${{ inputs.publish_dir }}
+      run: zip -r ${{ inputs.publish_dir }}.zip ${{ steps.download_artifact.outputs.download-path }}
       shell: bash
 
     # If this is the main branch, create a release named after the github repo slug and the human readable date
