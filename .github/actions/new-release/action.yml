@@ -46,6 +46,14 @@ runs:
       id: download_artifact
       with:
         name: ${{ inputs.publish_dir }}
+        path: ${{ github.workspace }}/${{ inputs.publish_dir }}
+
+    # Zip the downloaded artifact
+    - name: 🗜 Zip Artifact
+      run: |
+        cd ${{ steps.download_artifact.outputs.download-path }}
+        zip -r ../${{ inputs.publish_dir }}.zip .
+      shell: bash
 
     # If this is the main branch, create a release named after the github repo slug and the human readable date
     # Attach the downloaded artifact to the release
@@ -54,7 +62,7 @@ runs:
       uses: ncipollo/release-action@v1
       with:
         tag: "${{ steps.tag_version.outputs.new_tag }}"
-        artifacts: ${{ steps.download_artifact.outputs.download-path }}
+        artifacts: "${{ steps.download_artifact.outputs.download-path }}/${{ inputs.publish_dir }}.zip"
         token: ${{ inputs.github_token }}
         makeLatest: true
         name: "${{ github.event.repository.name }} ${{ steps.get_date.outputs.human_date }}"
