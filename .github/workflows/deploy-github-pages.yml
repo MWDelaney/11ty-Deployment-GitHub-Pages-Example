@@ -57,6 +57,11 @@ jobs:
     # Add a dependency to the build job
     needs: build
 
+    # Job environment
+    environment:
+      name: github-pages
+      url: ${{ steps.gh_pages.outputs.page_url }}
+
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
       pages: write # to deploy to Pages
