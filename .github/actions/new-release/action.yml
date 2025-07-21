@@ -62,7 +62,7 @@ runs:
       uses: ncipollo/release-action@v1
       with:
         tag: "${{ steps.tag_version.outputs.new_tag }}"
-        artifacts: "${{ steps.download_artifact.outputs.download-path }}/*.zip"
+        artifacts: "${{ github.workspace }}/*.zip"
         token: ${{ inputs.github_token }}
         makeLatest: true
         name: "${{ github.event.repository.name }} ${{ steps.get_date.outputs.human_date }}"
