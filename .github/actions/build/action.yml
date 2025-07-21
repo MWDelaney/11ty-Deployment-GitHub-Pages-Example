@@ -5,10 +5,28 @@ inputs:
   github_token:
     description: 'The GitHub token to use'
     required: true
+  build_command:
+    description: 'The npm command to run for building the site'
+    required: false
+    default: 'npm run build'
+  github_pages:
+    description: 'Whether to deploy to GitHub Pages'
+    required: false
+    default: 'false'
+  publish_dir:
+    description: 'The directory to publish'
+    required: false
+    default: '_site'
 
 runs:
   using: 'composite'
   steps:
+
+    # Checkout the repository
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     # Install dependencies
     - name: 🔧 Install Dependencies
@@ -18,11 +36,19 @@ runs:
     # Build the site
     - name: 👷‍♂️ Build Site
       shell: bash
-      run: npm run production
+      run: ${{ inputs.build_command }}
 
-    # Upload the public directory as an artifact
+    # Upload the _site directory as an artifact
     - name: 📦 Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: public
-        path: public
+        name: ${{ inputs.publish_dir }}
+        path: ${{ inputs.publish_dir }}
+
+    # If deploying to GitHub Pages, upload the _site directory as a Pages artifact
+    - name: 📦 Upload Pages Artifact
+      uses: actions/upload-pages-artifact@v3
+      if: ${{ inputs.github_pages }} == 'true'
+      with:
+        name: github-pages
+        path: ${{ inputs.publish_dir }}
