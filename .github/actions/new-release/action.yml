@@ -47,9 +47,11 @@ runs:
       with:
         name: ${{ inputs.publish_dir }}
 
-    # Zip the downloaded artifact
+      # Zip the downloaded artifact (only the contents, not the full path)
     - name: 🗜 Zip artifact
-      run: zip -r ${{ inputs.publish_dir }}.zip ${{ steps.download_artifact.outputs.download-path }}
+      run: |
+        cd ${{ steps.download_artifact.outputs.download-path }}
+        zip -r ../${{ inputs.publish_dir }}.zip .
       shell: bash
 
     # If this is the main branch, create a release named after the github repo slug and the human readable date
