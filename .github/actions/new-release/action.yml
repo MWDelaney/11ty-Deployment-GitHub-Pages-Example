@@ -40,6 +40,13 @@ runs:
         custom_tag: "${{ inputs.environment }}-${{ steps.get_date.outputs.machine_date }}"
         tag_prefix: ''
 
+    # Get the artifact from the build step
+    - name: 📥 Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.publish_dir }}
+
+    # Zip the downloaded artifact
     - name: 🗜 Zip artifact
       run: zip -r ${{ inputs.publish_dir }}.zip ${{ inputs.publish_dir }}
       shell: bash
