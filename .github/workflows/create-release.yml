@@ -19,7 +19,7 @@ run-name: create-release
 
 on:
   workflow_dispatch:
-  # deployment: # Uncomment this line to trigger on deployments
+  deployment: # Uncomment this line to trigger on deployments
 
 env:
   environment: production
