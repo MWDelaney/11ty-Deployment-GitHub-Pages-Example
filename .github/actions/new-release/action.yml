@@ -48,12 +48,13 @@ runs:
         name: ${{ inputs.publish_dir }}
 
     # If this is the main branch, create a release named after the github repo slug and the human readable date
+    # Attach the downloaded artifact to the release
     - name: 📦 Create release
       if: ${{ inputs.environment == 'production' }}
       uses: ncipollo/release-action@v1
       with:
         tag: "${{ steps.tag_version.outputs.new_tag }}"
-        artifacts: "${{ $GITHUB_WORKSPACE }}/${{ inputs.publish_dir }}"
+        artifacts: ${{ steps.download_artifact.outputs.download-path }}
         token: ${{ inputs.github_token }}
         makeLatest: true
         name: "${{ github.event.repository.name }} ${{ steps.get_date.outputs.human_date }}"
