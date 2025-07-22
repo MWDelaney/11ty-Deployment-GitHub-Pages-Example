@@ -23,7 +23,7 @@ export default {
   image: async function (eleventyConfig) {
     // Add plugin to eleventyConfig
     eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
-      outputDir: "./public/assets/images",
+      outputDir: "./_site/assets/images",
       urlPath: "/11ty-Deployment-GitHub-Pages-Example/assets/images/",
       extensions: "html",
       formats: ["auto"],
